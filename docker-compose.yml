@@ -1,0 +1,55 @@
+version: "3"
+services:
+    mysql:
+        image: mysql:5.7
+        restart: always
+        environment:
+            - MYSQL_USER=rundeck
+            - MYSQL_PASSWORD=rundeck
+            - MYSQL_DATABASE=rundeck
+            - MYSQL_RANDOM_ROOT_PASSWORD=yes
+        command:
+            - --character-set-server=utf8mb4
+            - --collation-server=utf8mb4_unicode_ci
+    nginx:
+        image: nginx:1.13.7
+        restart: always
+        environment:
+            - NGINX_HOST=localhost
+            - NGINX_PORT=10080
+        command: 
+            - /bin/bash
+            - -c
+            - "envsubst '$$NGINX_HOST $$NGINX_PORT' < /etc/nginx/conf.d/template/default.conf.template > /etc/nginx/conf.d/default.conf && nginx -g 'daemon off;'"
+        ports:
+            - 10080:80
+        depends_on:
+            - rundeck-1
+#           - rundeck-2
+        external_links:
+            - rundeck-1:runceck-1
+            - rundeck-2:runceck-2
+        volumes:
+            - ./volumes/nginx/etc/nginx/conf.d/template:/etc/nginx/conf.d/template:ro
+            - ./volumes/nginx/usr/share/nginx/html:/usr/share/nginx/html:ro
+    rundeck-1: &rundeck-1
+        image: jordan/rundeck:2.10.1
+        restart: on-failure
+        depends_on:
+            - mysql
+        external_links:
+            - mysql:db
+        environment:
+            - NO_LOCAL_MYSQL=yes
+            - DATABASE_URL=jdbc:mysql://db/rundeck?autoReconnect=true\&useUnicode=true\&characterEncoding=utf8
+            - SKIP_DATABASE_SETUP=true
+            - RDECK_JVM_SETTINGS=
+            - RUNDECK_PASSWORD=rundeck
+            - RUNDECK_ADMIN_PASSWORD=admin
+            - RUNDECK_STORAGE_PROVIDER=db
+            - RUNDECK_PROJECT_STORAGE_TYPE=db
+            - SERVER_URL=http://localhost:10080
+            - EXTERNAL_SERVER_URL=http://localhost:10080
+#    rundeck-2:
+#        <<: *rundeck-1
+
