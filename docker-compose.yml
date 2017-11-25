@@ -33,7 +33,7 @@ services:
             - ./volumes/nginx/etc/nginx/conf.d/template:/etc/nginx/conf.d/template:ro
             - ./volumes/nginx/usr/share/nginx/html:/usr/share/nginx/html:ro
     rundeck-1: &rundeck-1
-        image: jordan/rundeck:2.10.1
+        image: jordan/rundeck:2.10.0
         restart: on-failure
         depends_on:
             - mysql
