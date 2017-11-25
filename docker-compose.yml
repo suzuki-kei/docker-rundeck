@@ -39,6 +39,8 @@ services:
             - mysql
         external_links:
             - mysql:db
+        volumes:
+            - ./volumes/rundeck/var/lib/rundeck/.ssh:/var/lib/rundeck/.ssh
         environment:
             - NO_LOCAL_MYSQL=yes
             - DATABASE_URL=jdbc:mysql://db/rundeck?autoReconnect=true\&useUnicode=true\&characterEncoding=utf8
