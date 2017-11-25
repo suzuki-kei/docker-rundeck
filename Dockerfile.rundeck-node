@@ -1,0 +1,18 @@
+FROM ubuntu:16.04
+
+ARG USER=rundeck
+
+COPY ./volumes/rundeck-server/var/lib/rundeck/.ssh/id_rsa.pub /home/${USER}/.ssh/authorized_keys
+
+RUN useradd -m -s /bin/bash -d /home/${USER} -b /home/${USER} ${USER} && \
+    apt-get update && \
+    apt-get install -y openssh-server && \
+    chown -R ${USER}:${USER} /home/${USER}/.ssh && \
+    chmod 755 /home/${USER}/.ssh && \
+    chmod 644 /home/${USER}/.ssh/authorized_keys && \
+    mkdir -p /var/run/sshd && \
+    chmod 755 /var/run/sshd
+
+EXPOSE 22
+CMD ["/usr/sbin/sshd", "-D"]
+

@@ -1,5 +1,5 @@
 upstream rundeck {
-    server rundeck:4440 max_fails=0;
+    server rundeck-server:4440 max_fails=0;
 }
 
 server {
@@ -9,7 +9,7 @@ server {
 
     charset utf-8;
     index index.html;
-u   root /usr/share/nginx/html;
+    root /usr/share/nginx/html;
 
     error_page 500 502 503 504 /50x.html;
 

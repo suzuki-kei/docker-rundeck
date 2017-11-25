@@ -24,21 +24,24 @@ services:
         ports:
             - 10080:80
         depends_on:
-            - rundeck
+            - rundeck-server
         external_links:
-            - rundeck:runceck
+            - rundeck-server:runceck-server
         volumes:
             - ./volumes/nginx/etc/nginx/conf.d/template:/etc/nginx/conf.d/template:ro
             - ./volumes/nginx/usr/share/nginx/html:/usr/share/nginx/html:ro
-    rundeck:
+    rundeck-server:
         image: jordan/rundeck:2.10.0
         restart: on-failure
         depends_on:
             - mysql
+            - rundeck-node
         external_links:
             - mysql:db
+            - rundeck-node:node
         volumes:
-            - ./volumes/rundeck/var/lib/rundeck/.ssh:/var/lib/rundeck/.ssh
+            - ./volumes/rundeck-server/var/lib/rundeck/.ssh:/var/lib/rundeck/.ssh
+            - ./volumes/rundeck-server/var/rundeck/resources:/var/rundeck/resources
         environment:
             - NO_LOCAL_MYSQL=yes
             - DATABASE_URL=jdbc:mysql://db/rundeck?autoReconnect=true\&useUnicode=true\&characterEncoding=utf8
@@ -50,4 +53,9 @@ services:
             - RUNDECK_PROJECT_STORAGE_TYPE=db
             - SERVER_URL=http://localhost:10080
             - EXTERNAL_SERVER_URL=http://localhost:10080
+    rundeck-node:
+        build:
+            context: .
+            dockerfile: Dockerfile.rundeck-node
+        restart: on-failure
 

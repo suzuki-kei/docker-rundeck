@@ -1,3 +1,4 @@
 *.swp
-/volumes/rundeck/var/lib/rundeck/.ssh/*
+/volumes/rundeck-server/var/lib/rundeck/.ssh/*
+/volumes/rundeck-node/home/rundeck/.ssh/*
 
