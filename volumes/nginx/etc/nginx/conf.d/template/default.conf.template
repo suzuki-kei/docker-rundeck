@@ -1,5 +1,7 @@
 upstream rundeck {
-    server rundeck-server:4440 max_fails=0;
+    ip_hash;
+    server rundeck-server-1:4440 max_fails=0;
+    server rundeck-server-2:4440 max_fails=0;
 }
 
 server {

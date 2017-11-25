@@ -24,13 +24,15 @@ services:
         ports:
             - 10080:80
         depends_on:
-            - rundeck-server
+            - rundeck-server-1
+            - rundeck-server-2
         external_links:
-            - rundeck-server:runceck-server
+            - rundeck-server-1:runceck-server-1
+            - rundeck-server-2:runceck-server-2
         volumes:
             - ./volumes/nginx/etc/nginx/conf.d/template:/etc/nginx/conf.d/template:ro
             - ./volumes/nginx/usr/share/nginx/html:/usr/share/nginx/html:ro
-    rundeck-server:
+    rundeck-server-1: &rundeck-server-1
         image: jordan/rundeck:2.10.0
         restart: on-failure
         depends_on:
@@ -53,6 +55,8 @@ services:
             - RUNDECK_PROJECT_STORAGE_TYPE=db
             - SERVER_URL=http://localhost:10080
             - EXTERNAL_SERVER_URL=http://localhost:10080
+    rundeck-server-2:
+        <<: *rundeck-server-1
     rundeck-node:
         build:
             context: .
