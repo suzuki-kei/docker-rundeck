@@ -1,5 +1,13 @@
-node:
-    name: "node"
-    hostname: "node"
+node-1:
+    name: "node-1"
+    hostname: "node-1"
+    username: "rundeck"
+node-2:
+    name: "node-2"
+    hostname: "node-2"
+    username: "rundeck"
+node-3:
+    name: "node-3"
+    hostname: "node-3"
     username: "rundeck"
 

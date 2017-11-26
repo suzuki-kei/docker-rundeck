@@ -37,10 +37,14 @@ services:
         restart: on-failure
         depends_on:
             - mysql
-            - rundeck-node
+            - rundeck-node-1
+            - rundeck-node-2
+            - rundeck-node-3
         external_links:
             - mysql:db
-            - rundeck-node:node
+            - rundeck-node-1:node-1
+            - rundeck-node-2:node-2
+            - rundeck-node-3:node-3
         volumes:
             - ./volumes/rundeck-server/var/lib/rundeck/.ssh:/var/lib/rundeck/.ssh
             - ./volumes/rundeck-server/var/rundeck/resources:/var/rundeck/resources
@@ -57,9 +61,13 @@ services:
             - EXTERNAL_SERVER_URL=http://localhost:10080
     rundeck-server-2:
         <<: *rundeck-server-1
-    rundeck-node:
+    rundeck-node-1: &rundeck-node-1
         build:
             context: .
             dockerfile: Dockerfile.rundeck-node
         restart: on-failure
+    rundeck-node-2:
+        <<: *rundeck-node-1
+    rundeck-node-3:
+        <<: *rundeck-node-1
 
