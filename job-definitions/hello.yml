@@ -1,0 +1,26 @@
+- description: ''
+  executionEnabled: true
+  id: 725d3372-2fad-4663-9525-679685302ce7
+  loglevel: INFO
+  name: Hello
+  nodeFilterEditable: false
+  nodefilters:
+    dispatch:
+      excludePrecedence: true
+      keepgoing: false
+      rankOrder: ascending
+      successOnEmptyNodeFilter: false
+      threadcount: 1
+    filter: node-.*
+  nodesSelectedByDefault: true
+  orchestrator:
+    configuration:
+      count: '1'
+    type: subset
+  scheduleEnabled: true
+  sequence:
+    commands:
+    - exec: echo Hello
+    keepgoing: false
+    strategy: node-first
+  uuid: 725d3372-2fad-4663-9525-679685302ce7
